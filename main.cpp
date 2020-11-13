@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
-#define cimg_use_jpeg 1 
-#include "CImg.h"
-using namespace cimg_library;
+#include "tree.cpp"
 using namespace std;
 
 
