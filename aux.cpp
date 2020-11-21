@@ -9,8 +9,8 @@ using namespace std;
 
 CImg<char> Binarizar(CImg<float> & img) {
      CImg<char> R(img.width(),img.height()); 
-     for(int i=0;i< img.width();i++) {
-          for(int j=0;j< img.height();j++) {
+     for (int i = 0; i < img.width(); i++) {
+          for (int j = 0; j < img.height(); j++) {
                int r = img(i,j,0);
                int g = img(i,j,1);
                int b = img(i,j,2);
@@ -22,13 +22,13 @@ CImg<char> Binarizar(CImg<float> & img) {
      return R; 
 } 
 
-bool checkQuad(int x, int y, int xF, int yF, CImg<char> img) {
-     if (x==xF || y==yF)return true;
-     int color = img(x,y,0);
-     for (int i=x;i<xF;i++) {
-          for(int j =y;j<yF;j++) {
-               if(abs(img(i,j,0)-color)>10) { 
-               return false;
+bool checkQuad(int x, int y, int xF, int yF, const CImg<char>& img) {
+     if (x == xF || y == yF) return true;
+     int color = img(x, y, 0);
+     for (int i = x; i < xF; i++) {
+          for(int j = y; j < yF; j++) {
+               if (abs(img(i, j, 0) - color) > 10) { 
+                    return false;
                }
           }
      }
@@ -56,8 +56,8 @@ void megaInsert(int x, int y, int xF, int yF, CImg<char>& img) {
      }
 }
 
-void reconstruir() {
-     CImg<char> A("benjamin.exe copy.jpeg");
+void reconstruir(CImg<char>& B) {
+     CImg<char> A(B.width(), B.height());
      ifstream file("compress", ios::binary);
      if (file.is_open()) {
           file.seekg(0, ios::end);
@@ -83,9 +83,8 @@ void reconstruir() {
                }
           }
      }
-     CImg<char> B("benjamin.exe.jpeg");
-     A.display();
      B.display();
+     A.display();
 }
 
 int main() {
@@ -93,9 +92,9 @@ int main() {
      CImg<float> A("benjamin.exe.jpeg");
      CImg<char> R = Binarizar(A);
 
-     megaInsert(0, 0, R.width()-1, R.height()-1, R);
+     megaInsert(0, 0, R.width(), R.height(), R);
 
-     reconstruir();
+     reconstruir(R);
 
      return 0;
 }
