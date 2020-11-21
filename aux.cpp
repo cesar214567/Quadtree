@@ -9,18 +9,16 @@ using namespace std;
 
 CImg<char> Binarizar(CImg<float> & img) {
      CImg<char> R(img.width(),img.height()); 
-     for(int i=0;i< img.width();i++)
+     for(int i=0;i< img.width();i++) {
           for(int j=0;j< img.height();j++) {
                int r = img(i,j,0);
                int g = img(i,j,1);
                int b = img(i,j,2);
-               R(i,j) = (r+g+b)/3;
-               /*if ( (r+g+b)/3  < umbral) 
-                    R(i,j) = 255;
-               else
-                    R(i,j) = 0;
-          */
+               R(i, j, 0) = (r+g+b)/3;
+               R(i, j, 1) = (r+g+b)/3;
+               R(i, j, 2) = (r+g+b)/3;
           }    
+     }
      return R; 
 } 
 
@@ -49,8 +47,8 @@ void megaInsert(int x, int y, int xF, int yF, CImg<char>& img) {
                file.close();
           }
      } else {
-          int xmid = (xF-x)/2;
-          int ymid = (yF-y)/2;
+          int xmid = (xF+x)/2;
+          int ymid = (yF+y)/2;
           megaInsert(x, y, xmid, ymid, img);
           megaInsert(xmid, y, xF, ymid, img);
           megaInsert(x, ymid, xmid, yF, img);
@@ -78,7 +76,9 @@ void reconstruir() {
                file.read((char*) &color, sizeof(char));
                for (int j = x; j < xF; ++j) {
                     for (int k = y; k < yF; ++k) {
-                         A(j, k) = color;
+                         A(j, k, 0) = color;
+                         A(j, k, 1) = color;
+                         A(j, k, 2) = color;
                     }
                }
           }
