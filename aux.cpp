@@ -14,9 +14,9 @@ CImg<char> Binarizar(CImg<float> & img) {
                int r = img(i,j,0);
                int g = img(i,j,1);
                int b = img(i,j,2);
-               R(i, j, 0) = (r+g+b)/3;
-               R(i, j, 1) = (r+g+b)/3;
-               R(i, j, 2) = (r+g+b)/3;
+               R(i, j) = (r+g+b)/3;
+               //R(i, j, 1) = (r+g+b)/3;
+               //R(i, j, 2) = (r+g+b)/3;
           }    
      }
      return R; 
@@ -76,9 +76,7 @@ void reconstruir(CImg<char>& B) {
                file.read((char*) &color, sizeof(char));
                for (int j = x; j < xF; ++j) {
                     for (int k = y; k < yF; ++k) {
-                         A(j, k, 0) = color;
-                         A(j, k, 1) = color;
-                         A(j, k, 2) = color;
+                         A(j, k) = color;
                     }
                }
           }
@@ -91,7 +89,7 @@ int main() {
 
      CImg<float> A("benjamin.exe.jpeg");
      CImg<char> R = Binarizar(A);
-
+	cout << "hola" << endl;
      megaInsert(0, 0, R.width(), R.height(), R);
 
      reconstruir(R);
