@@ -21,10 +21,10 @@ private:
 
     bool checkQuad(int x, int y,int xF,int yF, CImg<char> img ){
         if (x==xF || y==yF)return true;
-        int color = img(x,y);
+        int color = img(x,y,0);
         for (int i=x;i<xF;i++) {
             for(int j =y;j<yF;j++) {
-                if(img(i,j)!=color) {
+                if(abs(img(i,j,0)-color)>10) { 
                     return false;
                 }
             }
@@ -44,14 +44,15 @@ public:
 
     void megaInsert(int x,int y, int xF,int yF,CImg<char> &img ){
         if (checkQuad( x, y, xF, yF,img)) {
-            insert(x,y,xF,yF,img(x,y));
+            //insert(x,y,xF,yF,img(x,y,0));
+            //
         } else {
             int xmid=(xF-x)/2;
             int ymid=(yF-y)/2;
-            checkQuad( x, y, xmid, ymid,img);
-            checkQuad( xmid, y, xF, ymid,img);
-            checkQuad( x, ymid, xmid, yF,img);
-            checkQuad( xmid, ymid, xF, yF,img);
+            megaInsert( x, y, xmid, ymid,img);
+            megaInsert( xmid, y, xF, ymid,img);
+            megaInsert( x, ymid, xmid, yF,img);
+            megaInsert( xmid, ymid, xF, yF,img);
         }
 
     }
@@ -72,9 +73,9 @@ public:
 
 /*
 0,0
-0               | 1
-                |
-                |
+0    |          | 1
+     |          |
+------          |
                 |
 ------------------------------
 2               |3
