@@ -25,7 +25,7 @@ return R;
 int main()
 {
 
-CImg<float> A("cara.png");
+CImg<float> A("benjamin.exe.jpeg");
 CImg<char> R = Binarizar(A,40);
 A.display();
 R.display();
