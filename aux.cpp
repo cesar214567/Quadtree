@@ -31,7 +31,7 @@ struct retorno{
 
 retorno checkQuad(int x, int y, int xF, int yF, const CImg<float>& img) {
      retorno return_value;
-     if (x == xF || y == yF){
+     if (x == xF && y == yF){
           return_value.aproved=true;
           return_value.red=img(x,y,0);
           return_value.green=img(x,y,1);
@@ -44,23 +44,24 @@ retorno checkQuad(int x, int y, int xF, int yF, const CImg<float>& img) {
      int RR = R;
      int GR = G;
      int BR = B;
-     for (int i = x; i < xF; i++) {
-          for(int j = y+1; j < yF; j++) {
-               if (abs(img(i, j, 0) - R)<4 && abs(img(i, j,1) - G)<4 && abs(img(i, j, 2) - B) < 4) { 
-                    retorno return_value;
-                    return_value.aproved=false;
-                    return return_value;
-               }else{
+     for (int i = x; i <= xF; i++) {
+          for(int j = y; j <= yF; j++) {
+               if (abs(img(i, j, 0) - R)<25 && abs(img(i, j,1) - G)<25 && abs(img(i, j, 2) - B) < 25) { 
+                    cout<<"PIXEL DE IMAGE ES: "<<img(i,j,0)<<endl;
                     RR+=img(i,j,0);
                     GR+=img(i,j,1);
                     BR+=img(i,j,2);
+               }else{
+                    retorno return_value;
+                    return_value.aproved=false;
+                    return return_value;
                }
           }
      }
-     int size =(xF-x)*(yF-y);
-     RR/=size;
-     GR/=size;
-     BR/=size;
+     int size =(xF-x+1)*(yF-y+1);
+     cout<<"RR es: "<<RR<<" size es: "<<size<<endl;
+
+     return_value.aproved=true;
      return_value.red = RR/size;
      return_value.green = GR/size;
      return_value.blue = BR/size;
@@ -108,7 +109,7 @@ void reconstruir(CImg<float> &B) {
      if (file.is_open()) {
           file.seekg(0, ios::end);
           int filesize = file.tellg();
-          int coords = filesize/( sizeof(int)*4 + sizeof(char) );
+          int coords = filesize/( sizeof(int)*7 );
           file.seekg(0, ios::beg);
           
           int x, y, xF, yF;
@@ -142,7 +143,7 @@ int main() {
 
      CImg<float> A("mario.jpeg");
      //CImg<char> R = Binarizar(A);
-     megaInsert(0, 0, A.width(), A.height(), A);
+     megaInsert(0, 0, A.width()-1, A.height()-1, A);
 	cout << "hola" << endl;
 
      reconstruir(A);
